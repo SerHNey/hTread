@@ -114,38 +114,21 @@ void* settime(tm* u)
 int main()
 {
     system("chcp 1251 >null");
-
-
-    //secondsmer();
-
-    
-
-
-    //return 0;
-
-    //time_t time(time_t * t);
-    //char choose = " ";
-    //time_t now = time(NULL);
-    //char* string_now = ctime(&now);
-    //printf("%s\n", &now);
     DWORD choose = -1;
     Sleep(100);
     HANDLE hTread[4];
-    tm timeE;
-    timeE.tm_sec = time(NULL);
-    printf("%ld\n", timeE.tm_sec);
     printf("Выберите действие над часами\n1 - Запуск времени \n2 - настройка времени \n3 - секундомер\n4 - таймер\n5 - Пауза\n");
     printf("0 - Остановить\n");
     tm* u;
     char* f;
+    const time_t timer = time(NULL);
     while (1)
     {
         scanf_s("%d", &choose);
         switch (choose)
         {
         case 1:
-            system("cls");
-            const time_t timer = time("10:10:10");
+            system("cls");   
             u = localtime(&timer);
             hTread[0] = CreateThread(NULL, 0, settime,u, NULL, NULL);
         break;
@@ -153,9 +136,8 @@ int main()
             printf("Введите время в формате - ЧЧ;ММ;CC\n");
             char* stroka = calloc(30, sizeof(char));
             scanf_s("%s", stroka);
-
-            char* number = " ";
-
+            char* number;
+            number = strtok(stroka, ":");
             int numbers[3];
             numbers[0] = atof(number);
             int  i = 1;
@@ -171,11 +153,10 @@ int main()
                 if (i > 3)
                     break;
             }
-            tm* u = NULL;
-            u->tm_hour = 12;
+            u->tm_hour = numbers[0];
             u->tm_min = numbers[1];
             u->tm_sec = numbers[2];
-            settime(u);
+            hTread[0] = CreateThread(NULL, 0, settime, u, NULL, NULL);
         break;
         case 3:
             hTread[0] = CreateThread(NULL, 0, secondsmer, 0, NULL, NULL);
@@ -200,11 +181,4 @@ int main()
     }
     
 }
-
-
-//int now_t() {
-//    time_t now = time(NULL);
-//    tm timeE;
-//    timeE.tm_sec = time(NULL);
-//}
 
