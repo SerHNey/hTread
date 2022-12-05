@@ -117,6 +117,7 @@ int main()
     char* f;
     const time_t timer = time(NULL);
     tm* u= localtime(&timer);
+
     while (1)
     {
         scanf_s("%d", &choose);
