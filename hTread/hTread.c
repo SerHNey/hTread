@@ -4,6 +4,7 @@
 #include <string.h>
 #include <malloc.h>
 #include <time.h>
+#include <Windows.h>
 
 
 typedef struct Tm
@@ -39,9 +40,9 @@ void* secondsmer() {
         }
         for (int i = 0; i < 20; i++) s[i] = 0;
         int length = strftime(s, 20, "%H:%M:%S", u);
-        Sleep(10);
+        Sleep(1000);
         system("cls");
-        printf("АСТАНИВИТЕСЬ\n");
+        printf("Секундомер\n");
         printf("%s\n", s);
     }
 }
@@ -58,7 +59,7 @@ void* timers() {
 
         for (int i = 0; i < 20; i++) s[i] = 0;
         int length = strftime(s, 20, "%H:%M:%S", u);
-        Sleep(10);
+        Sleep(100);
         system("cls");
         printf("АСТАНИВИТЕСЬ\n");
         printf("%s\n", s);
@@ -91,54 +92,64 @@ int main()
 {
     system("chcp 1251 >null");
 
-    secondsmer();
+
+    //secondsmer();
 
     
-    tm* u;
-    char* f;
-    system("cls");
-    const time_t timer = NULL;
-    u = localtime(&timer);
-    f = settime(u);
-    puts(f);
+    //tm* u;
+    //char* f;
+    //system("cls");
+    //const time_t timer = NULL;
+    //u = localtime(&timer);
+    //f = settime(u);
+    //puts(f);
 
-    return 0;
+    //return 0;
 
-
-
-
-
-    time_t time(time_t * t);
-    int choose = 0;
-    time_t now = time(NULL);
-    char* string_now = ctime(&now);
-    printf("%s\n", &now);
-
+    //time_t time(time_t * t);
+    //char choose = " ";
+    //time_t now = time(NULL);
+    //char* string_now = ctime(&now);
+    //printf("%s\n", &now);
+    DWORD choose = -1;
     Sleep(100);
-
+    HANDLE hTread[4];
     tm timeE;
     timeE.tm_sec = time(NULL);
     printf("%ld\n", timeE.tm_sec);
-    printf("Выберите действие над часами\n1 - пауза \n2 - настройка времени \n3 - секундомер\n4 - таймер\n5 - Запуск времени");
-    scanf_s("%d", choose);
-
-
-
-    switch (choose)
+    printf("Выберите действие над часами\n1 - пауза \n2 - настройка времени \n3 - секундомер\n4 - таймер\n5 - Запуск времени\n");
+    printf("0 - Остановить\n");
+    while (1)
     {
-    case 1:
-        
+        scanf_s("%d", &choose);
+        switch (choose)
+        {
+        case 1:
+            
         break;
-    case 2:
+        case 2:
+
         break;
-    case 3:
+        case 3:
+            hTread[0] = CreateThread(NULL, 0, secondsmer, 0, NULL, NULL);
         break;
-    case 4:
+        case 4:
+
         break;
-    case 5:
+        case 5:
+
         break;
-    default:
+        default:
+            for (size_t i = 0; i < 4; i++)
+            {
+                TerminateThread(hTread[i], 1);
+                SuspendThread(hTread[i]);
+                system("cls");
+                printf_s("Выполнена остановка\n");
+                printf("Выберите действие над часами\n1 - пауза \n2 - настройка времени \n3 - секундомер\n4 - таймер\n5 - Запуск времени\n");
+            }
         break;
+        }       
     }
     
 }
