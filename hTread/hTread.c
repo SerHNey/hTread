@@ -42,7 +42,7 @@ void* secondsmer() {
         int length = strftime(s, 20, "%H:%M:%S", u);
         Sleep(1000);
         system("cls");
-        printf("Секундомер\n");
+        printf("Секундомер запущен: ");
         printf("%s\n", s);
     }
 }
@@ -51,17 +51,28 @@ void* timers() {
     const time_t timer = NULL;
     u = localtime(&timer);
     char s[20] = { 0 };
+    u->tm_hour = 0;
+    u->tm_min = 5;
+    u->tm_sec = 0;
 
+    if(u->tm_sec == 0)
+        u->tm_sec += 1;
     while (1)
     {
-        if(u->tm_hour != 0)
-
-
+        u->tm_sec -= 1;
+        if (u->tm_sec == 0) {
+            u->tm_sec = 59;
+            u->tm_min -= 1;
+            if (u->tm_min == 0) {
+                u->tm_min = 59;
+                u->tm_hour -= 1;
+            }
+        }
         for (int i = 0; i < 20; i++) s[i] = 0;
         int length = strftime(s, 20, "%H:%M:%S", u);
-        Sleep(100);
+        Sleep(10);
         system("cls");
-        printf("АСТАНИВИТЕСЬ\n");
+        printf("Таймер запущен: ");
         printf("%s\n", s);
     }
 }
@@ -134,7 +145,7 @@ int main()
             hTread[0] = CreateThread(NULL, 0, secondsmer, 0, NULL, NULL);
         break;
         case 4:
-
+            hTread[1] = CreateThread(NULL, 0, timers, 0, NULL, NULL);
         break;
         case 5:
 
